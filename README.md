@@ -79,7 +79,7 @@ Now that the database is configured, install the necessary Laravel dependencies 
 composer install
 ```
 
-##4. Run migrations and seeders
+## 4. Run migrations and seeders
 Once the dependencies are installed and the database is set up, you can run Laravel's migrations and seeders:
 
 ```bash
@@ -87,14 +87,25 @@ php artisan migrate --seed
 ```
 This will create the necessary tables in the database and seed any test data if specified.
 
-## 6. Start the queue worker
+## 5. Set up Laravel Passport
+Run the following command to generate new personal access client IDs:
+```bash
+php artisan passport:client --personal
+```
+Replace the PASSPORT_PERSONAL_ACCESS_CLIENT_ID and PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET in your .env file with the values provided after running the previous command.
+
+## 6. Start Laragon services
+1. Open Laragon.
+2. Make sure Apache and MySQL services are running. Click on the Start All button if they are not already running.
+
+## 7. Start the queue worker
 To reduce latency in processing background tasks, run the queue worker with:
 ```bash
 php artisan queue:work
 ```
 This command will start listening for jobs on the queue and process them.
 
-## 7. Start the broadcasting server
+## 8. Start the broadcasting server
 For real-time broadcasting features in Laravel, you can start the broadcasting server (using Reverb) with:
 
 ```bash
@@ -102,7 +113,7 @@ php artisan reverb:start
 ```
 This will enable real-time communication for events like chat messages, notifications, etc.
 
-## 8. Access the application
+## 9. Access the application
 Now you can access your Laravel application by navigating to the following URL in your browser:
 
 ```bash
@@ -115,6 +126,12 @@ http://http://chatapp-backend.test/
 
 ```bash
 BROADCAST_DRIVER=reverb
+REVERB_APP_ID=
+REVERB_APP_KEY=
+REVERB_APP_SECRET=
+REVERB_HOST="localhost"
+REVERB_PORT=8080
+REVERB_SCHEME=http
 ```
 -Caching: For performance, consider running the following commands after setting up:
 ```bash
