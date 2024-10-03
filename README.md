@@ -29,38 +29,95 @@ You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you
 
 If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+# Laravel Application Setup with Laragon
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+This guide will walk you through the steps to set up and run a Laravel application using Laragon. We will ensure that the database connection matches Laragon’s MySQL configuration, install the necessary dependencies, and run the necessary commands for queuing and broadcasting.
 
-### Premium Partners
+## Prerequisites
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Make sure you have the following installed:
 
-## Contributing
+- **[Laragon](https://laragon.org/)**: A modern development environment for PHP, MySQL, and other tools.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 1. Clone the repository
 
-## Code of Conduct
+1. Navigate to the `www` folder in your Laragon installation. This is typically located at `C:\laragon\www`.
+2. Open a terminal (Command Prompt or Git Bash) and run the following command to clone your project:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+git clone https://github.com/martytrajkoski/ChatApp-backend.git
+```
 
-## Security Vulnerabilities
+## 2. Set up .env file
+In Laravel, the .env file contains configuration values for your application. You need to update the database settings to match Laragon’s MySQL configuration.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Navigate to the project directory:
+```bash
+cd ChatApp-backend
+```
+2. Open the .env file located in the root of your project.
+3. Update the following database fields to match your Laragon MySQL settings:
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=chatApp-database
+DB_USERNAME=root
+DB_PASSWORD=
+```
+By default, Laragon's MySQL username is root and the password is empty.
 
-## License
+To create a new database in Laragon:
+- Open Laragon.
+- Click on Menu → Database → MySQL.
+- Open phpMyAdmin or connect via your preferred MySQL client and create a new database (your_database_name as defined in the .env file).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 3. Install dependencies
+Now that the database is configured, install the necessary Laravel dependencies using Composer:
+
+```bash
+composer install
+```
+
+##4. Run migrations and seeders
+Once the dependencies are installed and the database is set up, you can run Laravel's migrations and seeders:
+
+```bash
+php artisan migrate --seed
+```
+This will create the necessary tables in the database and seed any test data if specified.
+
+## 6. Start the queue worker
+To reduce latency in processing background tasks, run the queue worker with:
+```bash
+php artisan queue:work
+```
+This command will start listening for jobs on the queue and process them.
+
+## 7. Start the broadcasting server
+For real-time broadcasting features in Laravel, you can start the broadcasting server (using Reverb) with:
+
+```bash
+php artisan reverb:start
+```
+This will enable real-time communication for events like chat messages, notifications, etc.
+
+## 8. Access the application
+Now you can access your Laravel application by navigating to the following URL in your browser:
+
+```bash
+http://http://chatapp-backend.test/
+```
+
+## Additional Notes
+- Queue Worker: The queue:work command should always be running in the background to process queued jobs. You can use a process manager like Supervisor to manage this in production.
+- Broadcasting: Ensure your .env is properly set up for broadcasting with Reverb. Typically, this involves configuring the broadcasting settings and making sure the relevant credentials are set.
+
+```bash
+BROADCAST_DRIVER=reverb
+```
+-Caching: For performance, consider running the following commands after setting up:
+```bash
+php artisan config:cache
+php artisan route:cache
+```
