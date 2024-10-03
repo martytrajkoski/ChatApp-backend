@@ -126,9 +126,9 @@ http://http://chatapp-backend.test/
 
 ```bash
 BROADCAST_DRIVER=reverb
-REVERB_APP_ID=
-REVERB_APP_KEY=
-REVERB_APP_SECRET=
+REVERB_APP_ID=795051
+REVERB_APP_KEY=s3w3thzezulgp5g0e5bs
+REVERB_APP_SECRET=gncsnk3rzpvczdakl6pz
 REVERB_HOST="localhost"
 REVERB_PORT=8080
 REVERB_SCHEME=http
